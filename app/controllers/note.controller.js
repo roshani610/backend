@@ -7,6 +7,7 @@ const MongoClient = mongodb.MongoClient;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 exports.create=(req,resp)=>{
     client.connect(err => {
+    const client = new MongoClient(uri, { useNewUrlParser: true });
     const collection = client.db("easy-notes").collection("notes");
     // perform actions on the collection object
     console.log("successfully connected");
@@ -26,6 +27,7 @@ exports.create=(req,resp)=>{
     });
 },
 exports.findAll=(req,resp)=>{
+    const client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
         const collection = client.db("easy-notes").collection("notes");
         // perform actions on the collection object
