@@ -8,8 +8,8 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.set('view engine', 'ejs');
 app.get('/',(req,resp)=>{
-   // resp.json({"message":"Hello world"})
-   resp.render('index');
+    resp.json({"message":"Hello world"})
+  // resp.render('index');
 });
 
 //defining routes
