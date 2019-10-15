@@ -1,7 +1,8 @@
 const express=require('express');
 const mongodb=require('mongodb');
 //create and save new note
-const uri = "mongodb+srv://admin:admin@cluster0-cronx.mongodb.net/easy-notes?retryWrites=true&w=majority";
+const mongoUrl="mongodb+srv://admin:admin@cluster0-cronx.mongodb.net/easy-notes?retryWrites=true&w=majority";
+const uri =process.env.MONGODB_URI || mongoUrl;
 const MongoClient = mongodb.MongoClient;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 exports.create=(req,resp)=>{
