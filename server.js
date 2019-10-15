@@ -6,9 +6,10 @@ const port=process.env.PORT || 3000;
 const app=express();
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
-
+app.set('view engine', 'ejs');
 app.get('/',(req,resp)=>{
-    resp.json({"message":"Hello world"})
+   // resp.json({"message":"Hello world"})
+   res.render('index');
 });
 
 //defining routes
