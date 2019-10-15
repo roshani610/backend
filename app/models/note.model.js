@@ -1,4 +1,4 @@
-const moongoes=require('mongoose');
+/* const moongoes=require('mongoose');
 
 
 const NoteSchema=moongoes.Schema({
@@ -8,4 +8,4 @@ const NoteSchema=moongoes.Schema({
     timestamps:true
 });
 
-module.exports=moongoes.model('Note',NoteSchema)
+module.exports=moongoes.model('Note',NoteSchema)  */

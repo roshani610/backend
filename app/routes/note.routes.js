@@ -5,9 +5,9 @@ module.exports=(app)=>{
     app.post('/notes',notes.create)
 
     //retrive data
-    app.get('/notes',notes.findAll);
+    app.get('/notes/noteslist',notes.findAll);
 
-    //retrive single note
+   /* //retrive single note
     app.get('/notes/:noteId',notes.findOne);
 
     //update note
@@ -15,5 +15,5 @@ module.exports=(app)=>{
 
     //delete note
     app.delete('/notes/:noteId',notes.delete);
-
+ */
 }

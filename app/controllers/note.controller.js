@@ -1,112 +1,47 @@
-const Note=require('../models/note.model.js')
 const express=require('express');
-const app=express();
-const router=express.Router();
+const mongodb=require('mongodb');
 //create and save new note
+const uri = "mongodb+srv://admin:admin@cluster0-cronx.mongodb.net/easy-notes?retryWrites=true&w=majority";
+const MongoClient = mongodb.MongoClient;
+const client = new MongoClient(uri, { useNewUrlParser: true });
 exports.create=(req,resp)=>{
-    console.log("create calleds");
-    //validating data
-    if(!req.body.content){
-        return resp.status(400).send({
-            message:"Note cant be empty"
-        });
-    }
-
-    //create note
-    const note=new Note({
-        title:req.body.title || 'untitled note',
-        content:req.body.content
+    client.connect(err => {
+    const collection = client.db("easy-notes").collection("notes");
+    // perform actions on the collection object
+    console.log("successfully connected");
+    collection.insertOne(req.body,(err,result)=>{
+        
+        if(err){
+            console.log(err);
+            process.exit(0);
+            
+        }else{
+            resp.status(200).send("Successfully added");
+        }
+        console.log(result);
+      
     })
-
-    //save note
-    note.save()
-    .then(data=>{
-        //resp.send(data);
-        resp.status(200).send({
-            message:"Successfully added"
-        })
-    }).catch(err=>{
-        resp.status(500).send({
-            message:err.message || "Some error occured while creating note"
-        });
+    client.close();
     });
-};
-
+},
 exports.findAll=(req,resp)=>{
-    //retriving all notes
-    Note.find().then(notes=>{
-        resp.send(notes);
-    }).catch(err=>{
-       return resp.status(500).send({
-            message:err.message||"Fail retirving data"
-        });
-    })
-};
-
-exports.findOne=(req,resp)=>{
-    Note.findById(req.params.noteId).then(note=>{
-        if(!note){
-            return resp.status(404).send({
-                message:"No records found"
-            })
-        }
-        resp.send(note);
-    }).catch(err=>{
-        if(err.kind === 'ObjectId'){
-            return resp.status(404).send({
-                message:"Note not found"+req.params.noteId
-            });
-        }
-        return resp.status(500).send({
-            message:err.message || "error occured while fetching single note data" + req.params.noteId
-        });
-    });
-};
-exports.update=(req,resp)=>
-{   
-    if(!req.body.content){
-        return resp.status(400).send({
-            message:"Note content can not be empty"
+    client.connect(err => {
+        const collection = client.db("easy-notes").collection("notes");
+        // perform actions on the collection object
+        console.log("successfully connected");
+        collection.find().toArray((err,result)=>{
+            if(err){
+                console.log(err);
+                process.exit(0);
+                
+            }else{
+                resp.status(200).send(result);
+            }
+            console.log(result);
         })
-    }
-    Note.findByIdAndUpdate(req.params.noteId,{
-        title:req.body.title || "untitled note",
-        content:req.body.content
-    },{new:true}).then(note=>{
-        if(!note){
-            return resp.status(404).send({
-                message:"Note not found"+req.params.noteId
-            })
-        }
-        resp.send(note)
-    }).catch(err=>{
-        if(err.kind === 'ObjectId'){
-            return resp.status(404).send({
-                message:"Note not found with id:"+req.params.noteId
-            })
-        }
-       return resp.status(500).send({
-            message:err.message || "Some error while updating note:"+req.params.noteId
-        });
+        client.close();
     });
-};
-exports.delete=(req,resp)=>{
-    Note.findByIdAndRemove(req.params.noteId).then(note=>{
-        if(!note){
-            return resp.status(404).send({
-                message:"Note not found with id:"+req.params.noteId
-            })
-        }
-        resp.send({message:"Note deleted successfully having id:"+req.params.noteId})
-    }).catch(err=>{
-        if(err.kind === "ObjectId"){
-            return resp.status(404).send({
-                message:"Note not found with id:"+req.params.noteId
-            })
-        }
-        return resp.status(500).send({
-            message:err.message || "error while deleting note having id:"+req.params.noteId
-        });
+}
 
-    });
-};
+
+
