@@ -9,7 +9,7 @@ app.use(bodyParser.json())
 app.set('view engine', 'ejs');
 app.get('/',(req,resp)=>{
    // resp.json({"message":"Hello world"})
-   res.render('index');
+   resp.render('index');
 });
 
 //defining routes
